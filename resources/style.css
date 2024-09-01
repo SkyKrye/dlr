@@ -17,7 +17,7 @@ th, td {
     transition: 1s;
 }
 td:hover {
-    background: rgba(20, 20, 20, 50%);
+    background: #222;
     transition: 10ms;
 }
 th {
