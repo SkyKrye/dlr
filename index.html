@@ -3,18 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File List</title>
+    <title>File Explorer</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
         }
-        ul {
-            list-style-type: none;
-            padding: 0;
+        table {
+            width: 100%;
+            border-collapse: collapse;
         }
-        li {
-            margin: 5px 0;
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
         }
         a {
             text-decoration: none;
@@ -26,25 +31,56 @@
     </style>
 </head>
 <body>
-    <h1>Files</h1>
-    <ul id="file-list"></ul>
+    <h1>File Explorer</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody id="file-list"></tbody>
+    </table>
     <script>
-        const files = [
-            'texturepack.zip',
-            'anotherfile.zip',
-            'example.txt'
-        ];
+        const repo = 'your-username/dl-solarsicom';
+        const branch = 'main';
+        const apiUrl = `https://api.github.com/repos/${repo}/contents`;
 
-        const fileList = document.getElementById('file-list');
+        async function fetchFiles(path = '') {
+            const response = await fetch(`${apiUrl}/${path}?ref=${branch}`);
+            const files = await response.json();
+            return files;
+        }
 
-        files.forEach(file => {
-            const listItem = document.createElement('li');
+        function createRow(file) {
+            const row = document.createElement('tr');
+            const nameCell = document.createElement('td');
+            const typeCell = document.createElement('td');
             const link = document.createElement('a');
-            link.href = file;
-            link.textContent = file;
-            listItem.appendChild(link);
-            fileList.appendChild(listItem);
-        });
+
+            link.href = file.type === 'dir' ? `/${file.path}` : file.download_url;
+            link.textContent = file.name;
+            nameCell.appendChild(link);
+            typeCell.textContent = file.type;
+
+            row.appendChild(nameCell);
+            row.appendChild(typeCell);
+            return row;
+        }
+
+        async function loadFiles() {
+            const path = window.location.pathname.substring(1);
+            const files = await fetchFiles(path);
+            const fileList = document.getElementById('file-list');
+            fileList.innerHTML = '';
+
+            files.forEach(file => {
+                const row = createRow(file);
+                fileList.appendChild(row);
+            });
+        }
+
+        loadFiles();
     </script>
 </body>
 </html>
