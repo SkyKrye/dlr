@@ -11,7 +11,7 @@
         }
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: collapse.
         }
         th, td {
             padding: 8px;
@@ -76,39 +76,11 @@
             return row;
         }
 
-        function createParentRow(path) {
-            const row = document.createElement('tr');
-            const nameCell = document.createElement('td');
-            const typeCell = document.createElement('td');
-            const dateCell = document.createElement('td');
-            const sizeCell = document.createElement('td');
-            const link = document.createElement('a');
-
-            const parentPath = path.split('/').slice(0, -1).join('/');
-            link.href = `/${parentPath}`;
-            link.textContent = 'Parent Folder';
-            nameCell.appendChild(link);
-            typeCell.textContent = 'dir';
-            dateCell.textContent = '-';
-            sizeCell.textContent = '-';
-
-            row.appendChild(nameCell);
-            row.appendChild(typeCell);
-            row.appendChild(dateCell);
-            row.appendChild(sizeCell);
-            return row;
-        }
-
         async function loadFiles() {
             const path = window.location.pathname.substring(1);
             const files = await fetchFiles(path);
             const fileList = document.getElementById('file-list');
             fileList.innerHTML = '';
-
-            if (path) {
-                const parentRow = createParentRow(path);
-                fileList.appendChild(parentRow);
-            }
 
             files.forEach(file => {
                 const row = createRow(file);
