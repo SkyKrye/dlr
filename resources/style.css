@@ -1,0 +1,37 @@
+body {
+    font-family: Segoe UI Light, Tahoma, sans-serif;
+    margin: 20px;
+    background: #111;
+    color: white;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 8px;
+    color: white;
+    text-align: left;
+    border-bottom: 2px solid #111;
+    background: #333;
+    transition: 1s;
+}
+td:hover {
+    background: rgba(20, 20, 20, 50%);
+    transition: 10ms;
+}
+th {
+    background-color: #252525;
+    color: #eeeeee;
+} 
+h1 {
+    color: #7cbbff;
+}
+a {
+    color: #7cbbff;
+    text-decoration: none;
+}
+a:hover {
+    color: #7cbbff;
+    text-decoration-line: underline;
+}
