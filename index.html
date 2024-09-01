@@ -51,7 +51,7 @@
             nameCell.appendChild(link);
             typeCell.textContent = file.type;
             dateCell.textContent = 'N/A'; // Placeholder as created_at is not available
-            sizeCell.textContent = formatSize(file.size);
+            sizeCell.textContent = file.type === 'dir' ? '-' : formatSize(file.size);
 
             row.appendChild(nameCell);
             row.appendChild(typeCell);
