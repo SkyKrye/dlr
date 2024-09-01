@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DLR - Solarsicom</title>
+    <title>/misc/ [DLR - Solarsicom]</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -42,18 +42,12 @@
         <tbody id="file-list"></tbody>
     </table>
     <script>
+        const repo = 'SkyKrye/dlr';
         const branch = 'main';
+        const apiUrl = `https://api.github.com/repos/${repo}/contents/misc`;
 
-        function getRepoAndPath() {
-            const pathParts = window.location.pathname.split('/').filter(part => part);
-            const repo = pathParts.slice(0, 2).join('/');
-            const path = pathParts.slice(2).join('/');
-            return { repo, path };
-        }
-
-        async function fetchFiles(repo, path = '') {
-            const apiUrl = `https://api.github.com/repos/${repo}/contents/${path}?ref=${branch}`;
-            const response = await fetch(apiUrl);
+        async function fetchFiles(path = '') {
+            const response = await fetch(`${apiUrl}/${path}?ref=${branch}`);
             const files = await response.json();
             return files;
         }
@@ -75,8 +69,8 @@
         }
 
         async function loadFiles() {
-            const { repo, path } = getRepoAndPath();
-            const files = await fetchFiles(repo, path);
+            const path = window.location.pathname.substring(1);
+            const files = await fetchFiles(path);
             const fileList = document.getElementById('file-list');
             fileList.innerHTML = '';
 
