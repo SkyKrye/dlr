@@ -11,7 +11,7 @@
         }
         table {
             width: 100%;
-            border-collapse: collapse.
+            border-collapse: collapse;
         }
         th, td {
             padding: 8px;
@@ -54,10 +54,6 @@
             return files;
         }
 
-        function currentDir {
-            console.log($repo, $apiUrl)
-        }
-
         function createRow(file) {
             const row = document.createElement('tr');
             const nameCell = document.createElement('td');
@@ -70,7 +66,7 @@
             link.textContent = file.name;
             nameCell.appendChild(link);
             typeCell.textContent = file.type;
-            dateCell.textContent = new Date(file.created_at).toLocaleDateString();
+            dateCell.textContent = 'N/A'; // Placeholder as created_at is not available
             sizeCell.textContent = file.size;
 
             row.appendChild(nameCell);
