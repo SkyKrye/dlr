@@ -38,7 +38,7 @@
                 <th>Name</th>
                 <th>Type</th>
                 <th>Date Added</th>
-                <th>Size (bytes)</th>
+                <th>Size</th>
             </tr>
         </thead>
         <tbody id="file-list"></tbody>
@@ -54,6 +54,13 @@
             return files;
         }
 
+        function formatSize(size) {
+            if (size < 1024) return `${size} B`;
+            else if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
+            else if (size < 1024 * 1024 * 1024) return `${(size / (1024 * 1024)).toFixed(2)} MB`;
+            else return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
+        }
+
         function createRow(file) {
             const row = document.createElement('tr');
             const nameCell = document.createElement('td');
@@ -67,7 +74,7 @@
             nameCell.appendChild(link);
             typeCell.textContent = file.type;
             dateCell.textContent = 'N/A'; // Placeholder as created_at is not available
-            sizeCell.textContent = file.size;
+            sizeCell.textContent = formatSize(file.size);
 
             row.appendChild(nameCell);
             row.appendChild(typeCell);
