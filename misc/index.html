@@ -37,6 +37,8 @@
             <tr>
                 <th>Name</th>
                 <th>Type</th>
+                <th>Date Added</th>
+                <th>Size (bytes)</th>
             </tr>
         </thead>
         <tbody id="file-list"></tbody>
@@ -56,15 +58,44 @@
             const row = document.createElement('tr');
             const nameCell = document.createElement('td');
             const typeCell = document.createElement('td');
+            const dateCell = document.createElement('td');
+            const sizeCell = document.createElement('td');
             const link = document.createElement('a');
 
             link.href = file.type === 'dir' ? `/${file.path}` : file.download_url;
             link.textContent = file.name;
             nameCell.appendChild(link);
             typeCell.textContent = file.type;
+            dateCell.textContent = new Date(file.created_at).toLocaleDateString();
+            sizeCell.textContent = file.size;
 
             row.appendChild(nameCell);
             row.appendChild(typeCell);
+            row.appendChild(dateCell);
+            row.appendChild(sizeCell);
+            return row;
+        }
+
+        function createParentRow(path) {
+            const row = document.createElement('tr');
+            const nameCell = document.createElement('td');
+            const typeCell = document.createElement('td');
+            const dateCell = document.createElement('td');
+            const sizeCell = document.createElement('td');
+            const link = document.createElement('a');
+
+            const parentPath = path.split('/').slice(0, -1).join('/');
+            link.href = `/${parentPath}`;
+            link.textContent = 'Parent Folder';
+            nameCell.appendChild(link);
+            typeCell.textContent = 'dir';
+            dateCell.textContent = '-';
+            sizeCell.textContent = '-';
+
+            row.appendChild(nameCell);
+            row.appendChild(typeCell);
+            row.appendChild(dateCell);
+            row.appendChild(sizeCell);
             return row;
         }
 
@@ -73,6 +104,11 @@
             const files = await fetchFiles(path);
             const fileList = document.getElementById('file-list');
             fileList.innerHTML = '';
+
+            if (path) {
+                const parentRow = createParentRow(path);
+                fileList.appendChild(parentRow);
+            }
 
             files.forEach(file => {
                 const row = createRow(file);
