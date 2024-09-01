@@ -11,7 +11,7 @@
         }
         table {
             width: 100%;
-            border-collapse: collapse.
+            border-collapse: collapse;
         }
         th, td {
             padding: 8px;
@@ -38,7 +38,7 @@
                 <th>Name</th>
                 <th>Type</th>
                 <th>Date Added</th>
-                <th>Size (bytes)</th>
+                <th>Size</th>
             </tr>
         </thead>
         <tbody id="file-list"></tbody>
@@ -46,16 +46,24 @@
     <script>
         const repo = 'SkyKrye/dlr';
         const branch = 'main';
+        const token = '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'; // Replace with your actual token
         const apiUrl = `https://api.github.com/repos/${repo}/contents/`;
 
         async function fetchFiles(path = '') {
-            const response = await fetch(`${apiUrl}/${path}?ref=${branch}`);
+            const response = await fetch(`${apiUrl}/${path}?ref=${branch}`, {
+                headers: {
+                    'Authorization': `token ${token}`
+                }
+            });
             const files = await response.json();
             return files;
         }
 
-        function currentDir {
-            console.log($repo, $apiUrl)
+        function formatSize(size) {
+            if (size < 1024) return `${size} B`;
+            else if (size < 1024 * 1024) return `${(size / 1024).toFixed(2)} KB`;
+            else if (size < 1024 * 1024 * 1024) return `${(size / (1024 * 1024)).toFixed(2)} MB`;
+            else return `${(size / (1024 * 1024 * 1024)).toFixed(2)} GB`;
         }
 
         function createRow(file) {
@@ -70,8 +78,8 @@
             link.textContent = file.name;
             nameCell.appendChild(link);
             typeCell.textContent = file.type;
-            dateCell.textContent = new Date(file.created_at).toLocaleDateString();
-            sizeCell.textContent = file.size;
+            dateCell.textContent = 'N/A'; // Placeholder as created_at is not available
+            sizeCell.textContent = formatSize(file.size);
 
             row.appendChild(nameCell);
             row.appendChild(typeCell);
